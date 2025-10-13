@@ -69,7 +69,7 @@ interface Song {
 const songs: Song[] = [
   {
     name: "No More Mambo",
-    cost: 1000,
+    cost: 10,
     file: "song/mambo1.mp3",
     unlocked: false,
   },
@@ -81,8 +81,14 @@ const songs: Song[] = [
   },
   {
     name: "Wake Up Hajimi",
-    cost: 100000,
+    cost: 50000,
     file: "song/WakeUpHajimi.mp3",
+    unlocked: false,
+  },
+  {
+    name: "GG Bond",
+    cost: 70000,
+    file: "song/GGBond.mp3",
     unlocked: false,
   },
 ];
