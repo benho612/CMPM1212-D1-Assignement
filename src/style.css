@@ -1,44 +1,71 @@
+/* Page */
 body {
   margin: 0;
-  padding: 0;
-  font-family: "Arial", sans-serif;
-  color: white;
+  font-family: Arial, sans-serif;
+  color: #fff;
   text-align: center;
-  height: 100vh;
-
-  /* 🌅 Background image imported via JS */
-  background-image: url("./thumb-350-1266302.jpg");
-  /*background-size: contai;*/
-  background-position: center;
-  background-repeat: no-repeat;
+  min-height: 100vh;
+  background: #0b0f1a; /* keep whatever background you prefer */
 }
 
+/* Card */
 .game-container {
-  background-color: rgba(0, 0, 0, 0.55);
-  margin: 10% auto;
-  width: 50%;
-  padding: 25px;
+  background: rgba(0, 0, 0, 0.55);
+  width: min(720px, 92vw);
+  margin: 8vh auto;
+  padding: 28px 22px 32px;
   border-radius: 16px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  margin: 10px;
+/* Image-as-button */
+.record-btn {
   border: none;
-  border-radius: 8px;
+  background: transparent;
+  padding: 0;
   cursor: pointer;
-  background-color: #00449f;
+  display: inline-block;
+  margin: 14px 0 10px;
+}
+
+.record-btn img {
+  width: 180px; /* adjust as you like */
+  height: 180px; /* square as requested */
+  object-fit: cover; /* keep it perfectly square without distortion */
+  border-radius: 12px; /* 0 for sharp corners; 50% for circle */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  transition: transform 90ms ease, filter 150ms ease;
+}
+
+.record-btn:hover img {
+  transform: scale(1.04);
+}
+.record-btn:active img {
+  transform: scale(0.98);
+  filter: brightness(0.9);
+}
+
+/* Shop layout */
+#shop {
+  margin-top: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+#shop button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  background: #00449f;
   color: white;
-  transition: background-color 0.2s;
+  cursor: pointer;
+  transition: background-color 0.15s;
 }
 
-button:hover:not(:disabled) {
-  background-color: #0066ff;
+#shop button:hover:not(:disabled) {
+  background: #1866ff;
 }
-
-button:disabled {
-  background-color: #888;
+#shop button:disabled {
+  background: #7a7a7a;
   cursor: not-allowed;
 }
