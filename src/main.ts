@@ -1,9 +1,4 @@
-/*import exampleIconUrl from "./noun-paperclip-7598668-00449F.png";
-import "./style.css";
-
-document.body.innerHTML = `
-  <p>Example image asset: <img src="${exampleIconUrl}" class="icon" /></p>
-`;*/
+let lastTime = performance.now(); // record the last frame time
 
 let counter: number = 0;
 
@@ -24,8 +19,20 @@ button.addEventListener("click", () => {
   console.log("I have these thingies:", button, counterElement, counter);
 });
 
-setInterval(() => {
-  counter += 1;
-  counterElement.textContent = counter.toString();
-  console.log("Auto increment:", counter);
-}, 1000);
+function update(currentTime: number) {
+  // compute time passed (in seconds)
+  const deltaTime = (currentTime - lastTime) / 1000;
+  lastTime = currentTime;
+
+  // add 1 per second (scaled by delta time)
+  counter += deltaTime * 1.0;
+
+  // update display
+  counterElement.textContent = counter.toFixed(2);
+
+  // loop again
+  requestAnimationFrame(update);
+}
+
+// start animation loop
+requestAnimationFrame(update);
