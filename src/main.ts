@@ -23,3 +23,9 @@ button.addEventListener("click", () => {
   counterElement.textContent = counter.toString();
   console.log("I have these thingies:", button, counterElement, counter);
 });
+
+setInterval(() => {
+  counter += 1;
+  counterElement.textContent = counter.toString();
+  console.log("Auto increment:", counter);
+}, 1000);
