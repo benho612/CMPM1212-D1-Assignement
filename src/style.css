@@ -85,3 +85,90 @@ body {
   background: #7a7a7a;
   cursor: not-allowed;
 }
+
+/* Layout: game on left, songs on right */
+.main-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.song-tab {
+  background: rgba(0, 0, 0, 0.55);
+  padding: 24px;
+  border-radius: 16px;
+  width: 280px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  color: white;
+  text-align: left;
+}
+
+.song-tab h2 {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+#songs button {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #444;
+  color: white;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+#songs button:disabled {
+  background: #888;
+  cursor: not-allowed;
+}
+
+#songs button:hover:not(:disabled) {
+  background: #1866ff;
+}
+
+/* Song tab volume control */
+.volume {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.volume label {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+#volumeSlider {
+  width: 100%;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: #888;
+  outline: none;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #1866ff;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.15);
+}
+
+#volumeSlider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #1866ff;
+  cursor: pointer;
+  border: none;
+}
