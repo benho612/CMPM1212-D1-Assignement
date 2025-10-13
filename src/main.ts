@@ -9,14 +9,54 @@ interface Item {
   cost: number;
   rate: number; // spins/sec
   count: number;
+  description: string;
 }
 const PRICE_FACTOR = 1.15;
 
 // Themed upgrades (vinyl studio vibe)
 const items: Item[] = [
-  { name: "Extra Stylus", cost: 10, rate: 0.1, count: 0 },
-  { name: "Preamp Boost", cost: 100, rate: 2.0, count: 0 },
-  { name: "Motor Upgrade", cost: 1000, rate: 50, count: 0 },
+  {
+    name: "Extra Stylus",
+    cost: 10,
+    rate: 0.1,
+    count: 0,
+    description: "A fresh needle for smoother grooves. (+0.1 spins/sec each)",
+  },
+
+  {
+    name: "Preamp Boost",
+    cost: 100,
+    rate: 2.0,
+    count: 0,
+    description: "Hotter signal, louder room. (+2 spins/sec each)",
+  },
+
+  {
+    name: "Motor Upgrade",
+    cost: 1000,
+    rate: 50,
+    count: 0,
+    description: "High-torque platter motor. (+50 spins/sec each)",
+  },
+
+  // NEW — Step 10 additions
+  {
+    name: "Balanced Tonearm",
+    cost: 7500,
+    rate: 160,
+    count: 0,
+    description:
+      "Precision-balanced arm cuts wow & flutter. (+160 spins/sec each)",
+  },
+
+  {
+    name: "Studio Press",
+    cost: 20000,
+    rate: 500,
+    count: 0,
+    description:
+      "Your own micro-press for constant output. (+500 spins/sec each)",
+  },
 ];
 
 interface Song {
@@ -126,6 +166,7 @@ volumeSlider.addEventListener("input", () => {
 items.forEach((item, i) => {
   const btn = document.createElement("button");
   btn.id = `buy-${i}`;
+  btn.title = item.description;
   shop.appendChild(btn);
 
   btn.addEventListener("click", () => {
