@@ -1,14 +1,18 @@
+import "./style.css";
+
 let counter: number = 0;
 let growthRate = 0;
 let lastTime = performance.now(); // record the last frame time
 
 // Create basic HTML structure
 document.body.innerHTML = `
-  <h1>MAMBO CLICKER</h1>
-  <p>Counter: <span id="counter">0.00</span></p>
-  <p>Growth: <span id="rate">0.00</span> / sec</p>
-  <button id="increment">Click Me!</button>
-  <button id="buy-upgrade" disabled>Buy Upgrade (+1/sec) — Cost: 10</button>
+  <div class="game-container">
+    <h1>CMPM 121 Project</h1>
+    <p>Counter: <span id="counter">0.00</span></p>
+    <p>Growth: <span id="rate">0.00</span> / sec</p>
+    <button id="increment">Click Me!</button>
+    <button id="buy-upgrade" disabled>Buy Upgrade (+1/sec) — Cost: 10</button>
+  </div>
 `;
 
 // Add click handler
