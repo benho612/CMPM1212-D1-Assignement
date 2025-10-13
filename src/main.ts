@@ -67,16 +67,21 @@ interface Song {
 }
 
 const songs: Song[] = [
-  { name: "No More Mambo", cost: 10, file: "song/mambo1.mp3", unlocked: false },
+  {
+    name: "No More Mambo",
+    cost: 1000,
+    file: "song/mambo1.mp3",
+    unlocked: false,
+  },
   {
     name: "Space Mambo",
-    cost: 20,
+    cost: 20000,
     file: "song/SpaceMambo.mp3",
     unlocked: false,
   },
   {
     name: "Wake Up Hajimi",
-    cost: 30,
+    cost: 100000,
     file: "song/WakeUpHajimi.mp3",
     unlocked: false,
   },
@@ -86,6 +91,11 @@ const songs: Song[] = [
 document.body.innerHTML = `
   <div class="main-layout">
     <div class="game-container">
+      <label class="sfx-toggle">
+        <input type="checkbox" id="sfxToggle" checked>
+        Click sound
+      </label>
+
       <h1>Mambo Studio</h1>
 
       <p>Spins: <span id="counter">0.00</span></p>
@@ -114,8 +124,19 @@ const songsEl = document.getElementById("songs")!;
 const audioPlayer = new Audio();
 audioPlayer.loop = false;
 
-let currentVolume = 0.6; // default 60%
+const sfxPlayer = new Audio("song/mamboClick.mp3");
+sfxPlayer.loop = false;
+
+let currentVolume = 0.6;
 audioPlayer.volume = currentVolume;
+sfxPlayer.volume = currentVolume;
+
+// Checkbox state
+let sfxEnabled = true;
+const sfxToggle = document.getElementById("sfxToggle") as HTMLInputElement;
+sfxToggle.addEventListener("change", () => {
+  sfxEnabled = sfxToggle.checked;
+});
 
 songs.forEach((song, i) => {
   const btn = document.createElement("button");
@@ -159,6 +180,7 @@ const volVal = document.getElementById("volVal") as HTMLSpanElement;
 volumeSlider.addEventListener("input", () => {
   currentVolume = parseFloat(volumeSlider.value);
   audioPlayer.volume = currentVolume;
+  sfxPlayer.volume = currentVolume;
   volVal.textContent = `${Math.round(currentVolume * 100)}%`;
 });
 
@@ -174,6 +196,12 @@ items.forEach((item, i) => {
       counter -= item.cost;
       item.count += 1;
       item.cost = item.cost * PRICE_FACTOR;
+      if (sfxEnabled) {
+        try {
+          sfxPlayer.currentTime = 0; // restart for snappy repeated clicks
+          void sfxPlayer.play(); // ignore returned promise
+        } catch {}
+      }
       refreshUI();
     }
   });

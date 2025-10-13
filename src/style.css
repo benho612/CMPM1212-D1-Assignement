@@ -172,3 +172,25 @@ body {
   cursor: pointer;
   border: none;
 }
+
+/* make the container a positioning context */
+.game-container {
+  position: relative;
+} /* new */
+
+/* top-left click-sound toggle */
+.sfx-toggle {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  font-size: 12px;
+  color: #fff;
+  user-select: none;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  opacity: 0.9;
+}
+.sfx-toggle input {
+  transform: translateY(1px);
+}
