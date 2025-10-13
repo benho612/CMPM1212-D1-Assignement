@@ -2,7 +2,6 @@ import recordButtonUrl from "./Anime Girl on Vinyl Record.png"; // <-- rename to
 import "./style.css";
 
 let counter = 0; // total spins
-let growthRate = 0; // spins per second
 let lastTime = performance.now();
 
 interface Item {
@@ -33,6 +32,12 @@ const songs: Song[] = [
     name: "Space Mambo",
     cost: 20,
     file: "song/SpaceMambo.mp3",
+    unlocked: false,
+  },
+  {
+    name: "Wake Up Hajimi",
+    cost: 30,
+    file: "song/WakeUpHajimi.mp3",
     unlocked: false,
   },
 ];
@@ -127,16 +132,16 @@ items.forEach((item, i) => {
     if (counter >= item.cost) {
       counter -= item.cost;
       item.count += 1;
-      growthRate += item.rate;
-      item.cost = item.cost * PRICE_FACTOR; // Step 7 price scaling kept
+      item.cost = item.cost * PRICE_FACTOR;
       refreshUI();
     }
   });
 });
 
 function refreshUI() {
+  const rate = computeRate();
   counterEl.textContent = counter.toFixed(2);
-  rateEl.textContent = growthRate.toFixed(2);
+  rateEl.textContent = rate.toFixed(2);
 
   items.forEach((item, i) => {
     const btn = document.getElementById(`buy-${i}`) as HTMLButtonElement;
@@ -163,11 +168,15 @@ clickBtn.addEventListener("click", () => {
   refreshUI();
 });
 
+function computeRate(): number {
+  return items.reduce((sum, it) => sum + it.rate * it.count, 0);
+}
+
 // Frame-rate independent auto growth
 function loop(now: number) {
   const dt = (now - lastTime) / 1000;
   lastTime = now;
-  counter += growthRate * dt;
+  counter += computeRate() * dt;
   refreshUI();
   requestAnimationFrame(loop);
 }
