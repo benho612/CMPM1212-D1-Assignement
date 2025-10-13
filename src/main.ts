@@ -200,7 +200,9 @@ items.forEach((item, i) => {
         try {
           sfxPlayer.currentTime = 0; // restart for snappy repeated clicks
           void sfxPlayer.play(); // ignore returned promise
-        } catch {}
+        } catch {
+          console.log("sfx got cancelled by player");
+        }
       }
       refreshUI();
     }
