@@ -8,7 +8,7 @@ body {
 
   /* 🌅 Background image imported via JS */
   background-image: url("./thumb-350-1266302.jpg");
-  background-size: cover;
+  /*background-size: contai;*/
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -42,3 +42,8 @@ button:disabled {
   background-color: #888;
   cursor: not-allowed;
 }
+
+
+
+
+
