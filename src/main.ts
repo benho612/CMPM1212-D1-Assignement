@@ -7,7 +7,7 @@ let lastTime = performance.now();
 interface Item {
   name: string;
   cost: number;
-  rate: number; // spins/sec
+  rate: number;
   count: number;
   description: string;
 }
@@ -39,7 +39,6 @@ const items: Item[] = [
     description: "High-torque platter motor. (+50 spins/sec each)",
   },
 
-  // NEW — Step 10 additions
   {
     name: "Balanced Tonearm",
     cost: 7500,
@@ -62,7 +61,7 @@ const items: Item[] = [
 interface Song {
   name: string;
   cost: number;
-  file: string; // url or local mp3 path
+  file: string;
   unlocked: boolean;
 }
 
@@ -92,6 +91,10 @@ const songs: Song[] = [
     unlocked: false,
   },
 ];
+
+function fmt(n: number): string {
+  return n.toFixed(2);
+}
 
 // ---------- UI ----------
 document.body.innerHTML = `
@@ -217,14 +220,14 @@ items.forEach((item, i) => {
 
 function refreshUI() {
   const rate = computeRate();
-  counterEl.textContent = counter.toFixed(2);
-  rateEl.textContent = rate.toFixed(2);
+  counterEl.textContent = fmt(counter);
+  rateEl.textContent = fmt(rate);
 
   items.forEach((item, i) => {
     const btn = document.getElementById(`buy-${i}`) as HTMLButtonElement;
     btn.disabled = counter < item.cost;
     btn.textContent = `${item.name} (+${item.rate}/sec) — Cost: ${
-      item.cost.toFixed(2)
+      fmt(item.cost)
     } spins | Owned: ${item.count}`;
   });
 
