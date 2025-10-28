@@ -1,9 +1,9 @@
 import recordButtonUrl from "./Anime Girl on Vinyl Record.png"; // <-- rename to your actual file name
 import "./style.css";
 
-/* =========================
-   Data & constants (top)
-   ========================= */
+/* ===========================================
+   === DATA & INTERFACES ======================
+   =========================================== */
 let counter = 0; // total spins
 let lastTime = performance.now();
 
@@ -82,9 +82,9 @@ const songs: Song[] = [
   { name: "GG Bond", cost: 70000, file: "song/GGBond.mp3", unlocked: false },
 ];
 
-/* =========================
-   Helper functions (logic)
-   ========================= */
+/* ===========================================
+   === HELPER FUNCTIONS =======================
+   =========================================== */
 function fmt(n: number): string {
   return n.toFixed(2);
 }
@@ -93,10 +93,10 @@ function computeRate(): number {
   return items.reduce((sum, it) => sum + it.rate * it.count, 0);
 }
 
-/* =========================
-   UI refresh (uses helpers)
-   ========================= */
-// (Declared before UI setup so it’s easy to find; executed only after elements exist.)
+/* ===========================================
+   === UI REFRESH =============================
+   =========================================== */
+// Declared before UI setup so it’s easy to find; executed only after elements exist.
 function refreshUI() {
   const rate = computeRate();
   counterEl.textContent = fmt(counter);
@@ -121,9 +121,9 @@ function refreshUI() {
   });
 }
 
-/* =========================
-   UI setup (DOM & wiring)
-   ========================= */
+/* ===========================================
+   === UI CONSTRUCTION ========================
+   =========================================== */
 document.body.innerHTML = `
   <div class="main-layout">
     <div class="game-container">
@@ -167,14 +167,7 @@ let currentVolume = 0.6;
 audioPlayer.volume = currentVolume;
 sfxPlayer.volume = currentVolume;
 
-// Checkbox state
-let sfxEnabled = true;
-const sfxToggle = document.getElementById("sfxToggle") as HTMLInputElement;
-sfxToggle.addEventListener("change", () => {
-  sfxEnabled = sfxToggle.checked;
-});
-
-// Build song buttons
+// Song buttons
 songs.forEach((song, i) => {
   const btn = document.createElement("button");
   btn.textContent = `🔒 ${song.name} — Cost: ${song.cost} spins`;
@@ -221,7 +214,7 @@ volumeSlider.addEventListener("input", () => {
   volVal.textContent = `${Math.round(currentVolume * 100)}%`;
 });
 
-// Build shop buttons
+// Shop buttons
 items.forEach((item, i) => {
   const btn = document.createElement("button");
   btn.id = `buy-${i}`;
@@ -247,15 +240,25 @@ items.forEach((item, i) => {
   });
 });
 
-/* =========================
-   Behavior (events & loop)
-   ========================= */
+/* ===========================================
+   === EVENT LISTENERS ========================
+   =========================================== */
+// Checkbox state (SFX toggle)
+let sfxEnabled = true;
+const sfxToggle = document.getElementById("sfxToggle") as HTMLInputElement;
+sfxToggle.addEventListener("change", () => {
+  sfxEnabled = sfxToggle.checked;
+});
+
+// Click = +1 spin
 clickBtn.addEventListener("click", () => {
   counter += 1;
   refreshUI();
 });
 
-// Frame-rate independent auto growth
+/* ===========================================
+   === GAME LOOP ==============================
+   =========================================== */
 function loop(now: number) {
   const dt = (now - lastTime) / 1000;
   lastTime = now;
