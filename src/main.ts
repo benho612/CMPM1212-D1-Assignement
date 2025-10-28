@@ -26,18 +26,60 @@ const PRICE_FACTOR = 1.15;
 
 // Themed upgrades (vinyl studio vibe)
 const items: Item[] = [
-  { name: "Extra Stylus",     cost: 10,    rate: 0.1,  count: 0, description: "A fresh needle for smoother grooves. (+0.1 spins/sec each)" },
-  { name: "Preamp Boost",     cost: 100,   rate: 2.0,  count: 0, description: "Hotter signal, louder room. (+2 spins/sec each)" },
-  { name: "Motor Upgrade",    cost: 1000,  rate: 50,   count: 0, description: "High-torque platter motor. (+50 spins/sec each)" },
-  { name: "Balanced Tonearm", cost: 7500,  rate: 160,  count: 0, description: "Precision-balanced arm cuts wow & flutter. (+160 spins/sec each)" },
-  { name: "Studio Press",     cost: 20000, rate: 500,  count: 0, description: "Your own micro-press for constant output. (+500 spins/sec each)" },
+  {
+    name: "Extra Stylus",
+    cost: 10,
+    rate: 0.1,
+    count: 0,
+    description: "A fresh needle for smoother grooves. (+0.1 spins/sec each)",
+  },
+  {
+    name: "Preamp Boost",
+    cost: 100,
+    rate: 2.0,
+    count: 0,
+    description: "Hotter signal, louder room. (+2 spins/sec each)",
+  },
+  {
+    name: "Motor Upgrade",
+    cost: 1000,
+    rate: 50,
+    count: 0,
+    description: "High-torque platter motor. (+50 spins/sec each)",
+  },
+  {
+    name: "Balanced Tonearm",
+    cost: 7500,
+    rate: 160,
+    count: 0,
+    description:
+      "Precision-balanced arm cuts wow & flutter. (+160 spins/sec each)",
+  },
+  {
+    name: "Studio Press",
+    cost: 20000,
+    rate: 500,
+    count: 0,
+    description:
+      "Your own micro-press for constant output. (+500 spins/sec each)",
+  },
 ];
 
 const songs: Song[] = [
-  { name: "No More Mambo",  cost: 10,     file: "song/mambo1.mp3",      unlocked: false },
-  { name: "Space Mambo",    cost: 20000,  file: "song/SpaceMambo.mp3",  unlocked: false },
-  { name: "Wake Up Hajimi", cost: 50000,  file: "song/WakeUpHajimi.mp3",unlocked: false },
-  { name: "GG Bond",        cost: 70000,  file: "song/GGBond.mp3",      unlocked: false },
+  { name: "No More Mambo", cost: 10, file: "song/mambo1.mp3", unlocked: false },
+  {
+    name: "Space Mambo",
+    cost: 20000,
+    file: "song/SpaceMambo.mp3",
+    unlocked: false,
+  },
+  {
+    name: "Wake Up Hajimi",
+    cost: 50000,
+    file: "song/WakeUpHajimi.mp3",
+    unlocked: false,
+  },
+  { name: "GG Bond", cost: 70000, file: "song/GGBond.mp3", unlocked: false },
 ];
 
 /* =========================
@@ -63,7 +105,9 @@ function refreshUI() {
   items.forEach((item, i) => {
     const btn = document.getElementById(`buy-${i}`) as HTMLButtonElement;
     btn.disabled = counter < item.cost;
-    btn.textContent = `${item.name} (+${item.rate}/sec) — Cost: ${fmt(item.cost)} spins | Owned: ${item.count}`;
+    btn.textContent = `${item.name} (+${item.rate}/sec) — Cost: ${
+      fmt(item.cost)
+    } spins | Owned: ${item.count}`;
   });
 
   songs.forEach((song, i) => {
@@ -158,12 +202,16 @@ const songTab = document.querySelector(".song-tab")!;
 const volumeWrap = document.createElement("div");
 volumeWrap.className = "volume";
 volumeWrap.innerHTML = `
-  <label for="volumeSlider">Volume: <span id="volVal">${Math.round(currentVolume * 100)}%</span></label>
+  <label for="volumeSlider">Volume: <span id="volVal">${
+  Math.round(currentVolume * 100)
+}%</span></label>
   <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="${currentVolume}">
 `;
 songTab.appendChild(volumeWrap);
 
-const volumeSlider = document.getElementById("volumeSlider") as HTMLInputElement;
+const volumeSlider = document.getElementById(
+  "volumeSlider",
+) as HTMLInputElement;
 const volVal = document.getElementById("volVal") as HTMLSpanElement;
 
 volumeSlider.addEventListener("input", () => {
