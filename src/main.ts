@@ -1,6 +1,9 @@
 import recordButtonUrl from "./Anime Girl on Vinyl Record.png"; // <-- rename to your actual file name
 import "./style.css";
 
+/* =========================
+   Data & constants (top)
+   ========================= */
 let counter = 0; // total spins
 let lastTime = performance.now();
 
@@ -11,52 +14,6 @@ interface Item {
   count: number;
   description: string;
 }
-const PRICE_FACTOR = 1.15;
-
-// Themed upgrades (vinyl studio vibe)
-const items: Item[] = [
-  {
-    name: "Extra Stylus",
-    cost: 10,
-    rate: 0.1,
-    count: 0,
-    description: "A fresh needle for smoother grooves. (+0.1 spins/sec each)",
-  },
-
-  {
-    name: "Preamp Boost",
-    cost: 100,
-    rate: 2.0,
-    count: 0,
-    description: "Hotter signal, louder room. (+2 spins/sec each)",
-  },
-
-  {
-    name: "Motor Upgrade",
-    cost: 1000,
-    rate: 50,
-    count: 0,
-    description: "High-torque platter motor. (+50 spins/sec each)",
-  },
-
-  {
-    name: "Balanced Tonearm",
-    cost: 7500,
-    rate: 160,
-    count: 0,
-    description:
-      "Precision-balanced arm cuts wow & flutter. (+160 spins/sec each)",
-  },
-
-  {
-    name: "Studio Press",
-    cost: 20000,
-    rate: 500,
-    count: 0,
-    description:
-      "Your own micro-press for constant output. (+500 spins/sec each)",
-  },
-];
 
 interface Song {
   name: string;
@@ -65,38 +22,64 @@ interface Song {
   unlocked: boolean;
 }
 
-const songs: Song[] = [
-  {
-    name: "No More Mambo",
-    cost: 10,
-    file: "song/mambo1.mp3",
-    unlocked: false,
-  },
-  {
-    name: "Space Mambo",
-    cost: 20000,
-    file: "song/SpaceMambo.mp3",
-    unlocked: false,
-  },
-  {
-    name: "Wake Up Hajimi",
-    cost: 50000,
-    file: "song/WakeUpHajimi.mp3",
-    unlocked: false,
-  },
-  {
-    name: "GG Bond",
-    cost: 70000,
-    file: "song/GGBond.mp3",
-    unlocked: false,
-  },
+const PRICE_FACTOR = 1.15;
+
+// Themed upgrades (vinyl studio vibe)
+const items: Item[] = [
+  { name: "Extra Stylus",     cost: 10,    rate: 0.1,  count: 0, description: "A fresh needle for smoother grooves. (+0.1 spins/sec each)" },
+  { name: "Preamp Boost",     cost: 100,   rate: 2.0,  count: 0, description: "Hotter signal, louder room. (+2 spins/sec each)" },
+  { name: "Motor Upgrade",    cost: 1000,  rate: 50,   count: 0, description: "High-torque platter motor. (+50 spins/sec each)" },
+  { name: "Balanced Tonearm", cost: 7500,  rate: 160,  count: 0, description: "Precision-balanced arm cuts wow & flutter. (+160 spins/sec each)" },
+  { name: "Studio Press",     cost: 20000, rate: 500,  count: 0, description: "Your own micro-press for constant output. (+500 spins/sec each)" },
 ];
 
+const songs: Song[] = [
+  { name: "No More Mambo",  cost: 10,     file: "song/mambo1.mp3",      unlocked: false },
+  { name: "Space Mambo",    cost: 20000,  file: "song/SpaceMambo.mp3",  unlocked: false },
+  { name: "Wake Up Hajimi", cost: 50000,  file: "song/WakeUpHajimi.mp3",unlocked: false },
+  { name: "GG Bond",        cost: 70000,  file: "song/GGBond.mp3",      unlocked: false },
+];
+
+/* =========================
+   Helper functions (logic)
+   ========================= */
 function fmt(n: number): string {
   return n.toFixed(2);
 }
 
-// ---------- UI ----------
+function computeRate(): number {
+  return items.reduce((sum, it) => sum + it.rate * it.count, 0);
+}
+
+/* =========================
+   UI refresh (uses helpers)
+   ========================= */
+// (Declared before UI setup so it’s easy to find; executed only after elements exist.)
+function refreshUI() {
+  const rate = computeRate();
+  counterEl.textContent = fmt(counter);
+  rateEl.textContent = fmt(rate);
+
+  items.forEach((item, i) => {
+    const btn = document.getElementById(`buy-${i}`) as HTMLButtonElement;
+    btn.disabled = counter < item.cost;
+    btn.textContent = `${item.name} (+${item.rate}/sec) — Cost: ${fmt(item.cost)} spins | Owned: ${item.count}`;
+  });
+
+  songs.forEach((song, i) => {
+    const btn = document.getElementById(`song-${i}`) as HTMLButtonElement;
+    if (song.unlocked) {
+      btn.disabled = false;
+      btn.textContent = `🎵 ${song.name} (Click to Play)`;
+    } else {
+      btn.disabled = counter < song.cost;
+    }
+  });
+}
+
+/* =========================
+   UI setup (DOM & wiring)
+   ========================= */
 document.body.innerHTML = `
   <div class="main-layout">
     <div class="game-container">
@@ -112,12 +95,12 @@ document.body.innerHTML = `
 
       <button id="increment" class="record-btn" aria-label="Spin the record">
         <img src="${recordButtonUrl}" alt="Record click button" />
-    </button>
+      </button>
 
-    <div id="shop"></div>
-  </div>
+      <div id="shop"></div>
+    </div>
 
-  <div class="song-tab">
+    <div class="song-tab">
       <h2>Song Collection</h2>
       <div id="songs"></div>
     </div>
@@ -147,6 +130,7 @@ sfxToggle.addEventListener("change", () => {
   sfxEnabled = sfxToggle.checked;
 });
 
+// Build song buttons
 songs.forEach((song, i) => {
   const btn = document.createElement("button");
   btn.textContent = `🔒 ${song.name} — Cost: ${song.cost} spins`;
@@ -156,7 +140,6 @@ songs.forEach((song, i) => {
 
   btn.addEventListener("click", () => {
     if (song.unlocked) {
-      // play using the shared player at current volume
       audioPlayer.pause();
       audioPlayer.src = song.file;
       audioPlayer.currentTime = 0;
@@ -170,20 +153,17 @@ songs.forEach((song, i) => {
   });
 });
 
+// Volume UI
 const songTab = document.querySelector(".song-tab")!;
 const volumeWrap = document.createElement("div");
 volumeWrap.className = "volume";
 volumeWrap.innerHTML = `
-  <label for="volumeSlider">Volume: <span id="volVal">${
-  Math.round(currentVolume * 100)
-}%</span></label>
+  <label for="volumeSlider">Volume: <span id="volVal">${Math.round(currentVolume * 100)}%</span></label>
   <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="${currentVolume}">
 `;
 songTab.appendChild(volumeWrap);
 
-const volumeSlider = document.getElementById(
-  "volumeSlider",
-) as HTMLInputElement;
+const volumeSlider = document.getElementById("volumeSlider") as HTMLInputElement;
 const volVal = document.getElementById("volVal") as HTMLSpanElement;
 
 volumeSlider.addEventListener("input", () => {
@@ -205,10 +185,11 @@ items.forEach((item, i) => {
       counter -= item.cost;
       item.count += 1;
       item.cost = item.cost * PRICE_FACTOR;
+
       if (sfxEnabled) {
         try {
-          sfxPlayer.currentTime = 0; // restart for snappy repeated clicks
-          void sfxPlayer.play(); // ignore returned promise
+          sfxPlayer.currentTime = 0;
+          void sfxPlayer.play();
         } catch {
           console.log("sfx got cancelled by player");
         }
@@ -218,39 +199,13 @@ items.forEach((item, i) => {
   });
 });
 
-function refreshUI() {
-  const rate = computeRate();
-  counterEl.textContent = fmt(counter);
-  rateEl.textContent = fmt(rate);
-
-  items.forEach((item, i) => {
-    const btn = document.getElementById(`buy-${i}`) as HTMLButtonElement;
-    btn.disabled = counter < item.cost;
-    btn.textContent = `${item.name} (+${item.rate}/sec) — Cost: ${
-      fmt(item.cost)
-    } spins | Owned: ${item.count}`;
-  });
-
-  songs.forEach((song, i) => {
-    const btn = document.getElementById(`song-${i}`) as HTMLButtonElement;
-    if (song.unlocked) {
-      btn.disabled = false;
-      btn.textContent = `🎵 ${song.name} (Click to Play)`;
-    } else {
-      btn.disabled = counter < song.cost;
-    }
-  });
-}
-
-// Click = +1 spin
+/* =========================
+   Behavior (events & loop)
+   ========================= */
 clickBtn.addEventListener("click", () => {
   counter += 1;
   refreshUI();
 });
-
-function computeRate(): number {
-  return items.reduce((sum, it) => sum + it.rate * it.count, 0);
-}
 
 // Frame-rate independent auto growth
 function loop(now: number) {
@@ -260,5 +215,6 @@ function loop(now: number) {
   refreshUI();
   requestAnimationFrame(loop);
 }
+
 refreshUI();
 requestAnimationFrame(loop);
