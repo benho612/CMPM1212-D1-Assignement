@@ -1,4 +1,10 @@
-import recordButtonUrl from "./Anime Girl on Vinyl Record.png"; // <-- rename to your actual file name
+import recordButtonUrl from "./Anime Girl on Vinyl Record.png";
+import GGBond from "./GGBond.mp3";
+import NoMoreMambo from "./mambo1.mp3";
+import clickSoundUrl from "./mamboClick.mp3";
+import SpaceMambo from "./SpaceMambo.mp3";
+import WakeUpHajimi from "./WakeUpHajimi.mp3";
+
 import "./style.css";
 
 /* ===========================================
@@ -69,25 +75,25 @@ const songs: Song[] = [
   {
     name: "No More Mambo",
     cost: 10,
-    file: "src/song/mambo1.mp3",
+    file: NoMoreMambo,
     unlocked: false,
   },
   {
     name: "Space Mambo",
     cost: 20000,
-    file: "src/song/SpaceMambo.mp3",
+    file: SpaceMambo,
     unlocked: false,
   },
   {
     name: "Wake Up Hajimi",
     cost: 50000,
-    file: "src/song/WakeUpHajimi.mp3",
+    file: WakeUpHajimi,
     unlocked: false,
   },
   {
     name: "GG Bond",
     cost: 70000,
-    file: "src/song/GGBond.mp3",
+    file: GGBond,
     unlocked: false,
   },
 ];
@@ -170,7 +176,7 @@ const songsEl = document.getElementById("songs")!;
 const audioPlayer = new Audio();
 audioPlayer.loop = false;
 
-const sfxPlayer = new Audio("src/song/mamboClick.mp3");
+const sfxPlayer = new Audio(clickSoundUrl);
 sfxPlayer.loop = false;
 
 let currentVolume = 0.6;
