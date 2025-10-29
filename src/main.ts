@@ -66,20 +66,30 @@ const items: Item[] = [
 ];
 
 const songs: Song[] = [
-  { name: "No More Mambo", cost: 10, file: "song/mambo1.mp3", unlocked: false },
+  {
+    name: "No More Mambo",
+    cost: 10,
+    file: "src/song/mambo1.mp3",
+    unlocked: false,
+  },
   {
     name: "Space Mambo",
     cost: 20000,
-    file: "song/SpaceMambo.mp3",
+    file: "src/song/SpaceMambo.mp3",
     unlocked: false,
   },
   {
     name: "Wake Up Hajimi",
     cost: 50000,
-    file: "song/WakeUpHajimi.mp3",
+    file: "src/song/WakeUpHajimi.mp3",
     unlocked: false,
   },
-  { name: "GG Bond", cost: 70000, file: "song/GGBond.mp3", unlocked: false },
+  {
+    name: "GG Bond",
+    cost: 70000,
+    file: "src/song/GGBond.mp3",
+    unlocked: false,
+  },
 ];
 
 /* ===========================================
@@ -160,7 +170,7 @@ const songsEl = document.getElementById("songs")!;
 const audioPlayer = new Audio();
 audioPlayer.loop = false;
 
-const sfxPlayer = new Audio("song/mamboClick.mp3");
+const sfxPlayer = new Audio("src/song/mamboClick.mp3");
 sfxPlayer.loop = false;
 
 let currentVolume = 0.6;
