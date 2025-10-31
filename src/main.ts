@@ -172,7 +172,7 @@ document.body.innerHTML = `
       <p>Production: <span id="rate">0.00</span> spins/sec</p>
 
       <button id="increment" class="record-btn" aria-label="Spin the record">
-        <img src="${recordButtonUrl}" alt="Record click button" />
+        <img src="${recordButtonUrl}" alt="Record click button" draggable="false"/>
       </button>
 
       <div id="shop"></div>
@@ -301,12 +301,17 @@ clickBtn.addEventListener("click", (e) => {
     : btnRect.top + btnRect.height / 2 - containerRect.top;
 
   spawnFloaty(`+${fmt(gain)}`, cx, cy);
+  // restart the bounce animation each click
+  clickBtn.classList.remove("bounce");
+  void clickBtn.offsetWidth; // force reflow to replay animation
+  clickBtn.classList.add("bounce");
   refreshUI();
 });
 
 /* ===========================================
    === GAME LOOP ==============================
    =========================================== */
+
 function loop(now: number) {
   const dt = (now - lastTime) / 1000;
   lastTime = now;

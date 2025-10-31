@@ -218,3 +218,25 @@ body {
     opacity: 0;
   }
 }
+
+/* Bounce the whole button */
+.record-btn {
+  transform-origin: center;
+  will-change: transform;
+}
+
+.record-btn.bounce {
+  animation: btn-bounce 160ms ease-out;
+}
+
+@keyframes btn-bounce {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
