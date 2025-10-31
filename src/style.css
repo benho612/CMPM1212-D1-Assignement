@@ -194,3 +194,27 @@ body {
 .sfx-toggle input {
   transform: translateY(1px);
 }
+
+.floaty {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  font-weight: 700;
+  user-select: none;
+  pointer-events: none;
+  opacity: 1;
+  animation: floaty-rise 750ms ease-out forwards;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+@keyframes floaty-rise {
+  0% {
+    transform: translate(-50%, -20%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -120%);
+    opacity: 0;
+  }
+}

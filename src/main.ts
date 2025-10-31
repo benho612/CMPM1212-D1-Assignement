@@ -109,6 +109,24 @@ function computeRate(): number {
   return items.reduce((sum, it) => sum + it.rate * it.count, 0);
 }
 
+function spawnFloaty(text: string, x: number, y: number) {
+  const container = document.querySelector(".game-container") as HTMLElement;
+  const el = document.createElement("div");
+  el.className = "floaty";
+  el.textContent = text;
+
+  el.style.left = `${x}px`;
+  el.style.top = `${y}px`;
+
+  container.appendChild(el);
+  el.addEventListener("animationend", () => el.remove());
+}
+
+function getClickPower(): number {
+  const rate = computeRate(); // current spins/sec
+  return 1 + rate * 0.1; // +1 base + 10% of production rate
+}
+
 /* ===========================================
    === UI REFRESH =============================
    =========================================== */
@@ -267,8 +285,22 @@ sfxToggle.addEventListener("change", () => {
 });
 
 // Click = +1 spin
-clickBtn.addEventListener("click", () => {
-  counter += 1;
+clickBtn.addEventListener("click", (e) => {
+  const gain = getClickPower();
+  counter += gain;
+
+  const container = document.querySelector(".game-container") as HTMLElement;
+  const containerRect = container.getBoundingClientRect();
+  const btnRect = clickBtn.getBoundingClientRect();
+
+  const cx = e instanceof MouseEvent
+    ? e.clientX - containerRect.left
+    : btnRect.left + btnRect.width / 2 - containerRect.left;
+  const cy = e instanceof MouseEvent
+    ? e.clientY - containerRect.top
+    : btnRect.top + btnRect.height / 2 - containerRect.top;
+
+  spawnFloaty(`+${fmt(gain)}`, cx, cy);
   refreshUI();
 });
 
